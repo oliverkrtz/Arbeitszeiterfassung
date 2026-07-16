@@ -76,6 +76,13 @@ struct SettingsView: View {
                 } footer: {
                     Text("Trage deinen aktuellen Gleitzeitstand minutengenau ein, falls dein Konto nicht bei ±0 beginnt.")
                 }
+
+                Section("Darstellung") {
+                    Picker("Erscheinungsbild", selection: $settings.appearance) {
+                        ForEach(Appearance.allCases) { Text($0.label).tag($0) }
+                    }
+                    .pickerStyle(.segmented)
+                }
             }
             .navigationTitle("Einstellungen")
             .onAppear {

@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct RootTabView: View {
+    @Environment(AppSettings.self) private var settings
+
     var body: some View {
         TabView {
             Tab("Heute", systemImage: "sun.max") {
@@ -15,6 +17,15 @@ struct RootTabView: View {
             Tab("Einstellungen", systemImage: "gearshape") {
                 SettingsView()
             }
+        }
+        .preferredColorScheme(preferredScheme)
+    }
+
+    private var preferredScheme: ColorScheme? {
+        switch settings.appearance {
+        case .system: nil
+        case .light: .light
+        case .dark: .dark
         }
     }
 }
