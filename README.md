@@ -36,8 +36,8 @@ ohne Konto, ohne Datenweitergabe.
 **Heute — die Stempeluhr**
 - Ein Tap zum Ein- und Ausstempeln, exakt zur Uhrzeit des Antippens
 - Errechnete Feierabendzeit groß im Blick, mit Fortschrittsring
-- Manuelle Startzeit optional (z. B. nachträglich für 7:00 stempeln) — die Auswahl bleibt bis zum Einstempeln erhalten
-- Startzeit und Pause auch während des Tages korrigierbar, „Weiter arbeiten" nach versehentlichem Ausstempeln
+- Ein- und Ausstempeln auch rückwirkend mit frei gewählter Zeit (wenn die App gerade nicht zur Hand war) — die Auswahl bleibt bis zum Stempeln erhalten
+- Start, Ende und Pause jederzeit direkt auf der Karte korrigierbar, „Weiter arbeiten" nach versehentlichem Ausstempeln
 
 **Feierabend-Benachrichtigung**
 - Lokale Push zur errechneten Feierabendzeit, optional mit Vorwarnung (5–30 Min vorher)
@@ -54,7 +54,7 @@ ohne Konto, ohne Datenweitergabe.
 
 **Einstellungen**
 - Sollarbeitszeit und Pausendauer frei einstellbar
-- Startsaldo fürs Gleitzeitkonto (falls dein echtes Konto nicht bei ±0 beginnt)
+- Startsaldo fürs Gleitzeitkonto, minutengenau (falls dein echtes Konto nicht bei ±0 beginnt)
 
 ## So rechnet die App
 

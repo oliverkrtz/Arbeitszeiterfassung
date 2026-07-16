@@ -9,6 +9,10 @@ struct SettingsView: View {
 
     @State private var notificationsDenied = false
 
+    /// Vorzeichen des Startsaldos als eigener Zustand, damit „Minus“ auch
+    /// bei 0:00 wählbar bleibt, während man die Stunden/Minuten einstellt.
+    @State private var balanceIsNegative = false
+
     var body: some View {
         @Bindable var settings = settings
 
@@ -54,18 +58,29 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    Stepper(value: $settings.startBalanceMinutes, in: -600 * 60...600 * 60, step: 5) {
-                        LabeledContent("Startsaldo") {
-                            BalanceText(minutes: settings.startBalanceMinutes)
-                        }
+                    Picker("Richtung", selection: balanceSignBinding) {
+                        Text("Überstunden (+)").tag(1)
+                        Text("Unterstunden (−)").tag(-1)
+                    }
+                    Picker("Stunden", selection: balanceHoursBinding) {
+                        ForEach(0...200, id: \.self) { Text("\($0) Std").tag($0) }
+                    }
+                    Picker("Minuten", selection: balanceRestMinutesBinding) {
+                        ForEach(0..<60, id: \.self) { Text("\($0) Min").tag($0) }
+                    }
+                    LabeledContent("Startsaldo") {
+                        BalanceText(minutes: settings.startBalanceMinutes)
                     }
                 } header: {
                     Text("Gleitzeitkonto")
                 } footer: {
-                    Text("Übernimm hier deinen aktuellen Gleitzeitstand, falls dein Konto nicht bei ±0 beginnt. Gedrückt halten zum schnellen Ändern.")
+                    Text("Trage deinen aktuellen Gleitzeitstand minutengenau ein, falls dein Konto nicht bei ±0 beginnt.")
                 }
             }
             .navigationTitle("Einstellungen")
+            .onAppear {
+                balanceIsNegative = settings.startBalanceMinutes < 0
+            }
             .onChange(of: settings.notificationsEnabled) { _, enabled in
                 handleNotificationToggle(enabled)
             }
@@ -88,6 +103,38 @@ struct SettingsView: View {
         Binding(
             get: { settings.targetMinutes % 60 },
             set: { settings.targetMinutes = (settings.targetMinutes / 60) * 60 + $0 }
+        )
+    }
+
+    // MARK: - Startsaldo-Bindings (Vorzeichen/Stunden/Minuten getrennt)
+
+    private var balanceSignBinding: Binding<Int> {
+        Binding(
+            get: { balanceIsNegative ? -1 : 1 },
+            set: { newSign in
+                balanceIsNegative = newSign < 0
+                settings.startBalanceMinutes = (balanceIsNegative ? -1 : 1) * abs(settings.startBalanceMinutes)
+            }
+        )
+    }
+
+    private var balanceHoursBinding: Binding<Int> {
+        Binding(
+            get: { abs(settings.startBalanceMinutes) / 60 },
+            set: { newHours in
+                let magnitude = newHours * 60 + abs(settings.startBalanceMinutes) % 60
+                settings.startBalanceMinutes = (balanceIsNegative ? -1 : 1) * magnitude
+            }
+        )
+    }
+
+    private var balanceRestMinutesBinding: Binding<Int> {
+        Binding(
+            get: { abs(settings.startBalanceMinutes) % 60 },
+            set: { newMinutes in
+                let magnitude = (abs(settings.startBalanceMinutes) / 60) * 60 + newMinutes
+                settings.startBalanceMinutes = (balanceIsNegative ? -1 : 1) * magnitude
+            }
         )
     }
 

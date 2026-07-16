@@ -105,8 +105,32 @@ struct StartDayCard: View {
 struct RunningDayCard: View {
     @Bindable var day: WorkDay
     let glassNamespace: Namespace.ID
-    let onFinish: () -> Void
+    let onFinish: (Date) -> Void
     let onTimesChanged: () -> Void
+
+    /// Manuell gewählte Endzeit fürs rückwirkende Ausstempeln, persistiert
+    /// bis zum Ausstempeln. 0 = keine Auswahl (es zählt die aktuelle Zeit).
+    @AppStorage("runningCard.customEndTimestamp") private var customEndTimestamp: Double = 0
+
+    private var customEnd: Date? {
+        guard customEndTimestamp > 0 else { return nil }
+        let date = Date(timeIntervalSince1970: customEndTimestamp)
+        guard Calendar.current.isDateInToday(date) else { return nil }
+        return date
+    }
+
+    private var customEndBinding: Binding<Date> {
+        Binding(
+            get: { customEnd ?? .now },
+            set: { customEndTimestamp = $0.timeIntervalSince1970 }
+        )
+    }
+
+    /// Eine gewählte Endzeit vor der Startzeit ergäbe negative Arbeitszeit.
+    private var customEndIsInvalid: Bool {
+        if let customEnd { return customEnd < day.startTime }
+        return false
+    }
 
     var body: some View {
         VStack(spacing: 24) {
@@ -154,13 +178,49 @@ struct RunningDayCard: View {
             .onChange(of: day.startTime) { onTimesChanged() }
             .onChange(of: day.breakMinutes) { onTimesChanged() }
 
-            Button(action: onFinish) {
-                Label("Jetzt ausstempeln", systemImage: "stop.fill")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 6)
+            Button {
+                onFinish(customEnd ?? .now)
+                customEndTimestamp = 0
+            } label: {
+                Label(
+                    customEnd.map { "Ausstempeln um \($0.formatted(date: .omitted, time: .shortened))" }
+                        ?? "Jetzt ausstempeln",
+                    systemImage: "stop.fill"
+                )
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 6)
             }
             .buttonStyle(.glassProminent)
+            .disabled(customEndIsInvalid)
+
+            if customEnd != nil {
+                HStack {
+                    DatePicker(
+                        "Endzeit",
+                        selection: customEndBinding,
+                        displayedComponents: .hourAndMinute
+                    )
+                    Button("Zurücksetzen") {
+                        withAnimation(.smooth) { customEndTimestamp = 0 }
+                    }
+                    .font(.footnote)
+                }
+                .font(.callout)
+                if customEndIsInvalid {
+                    Text("Die Endzeit liegt vor der Startzeit.")
+                        .font(.footnote)
+                        .foregroundStyle(.red)
+                }
+            } else {
+                Button("Andere Endzeit wählen") {
+                    withAnimation(.smooth) {
+                        customEndTimestamp = Date.now.timeIntervalSince1970
+                    }
+                }
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+            }
         }
         .padding(24)
         .glassEffect(.regular, in: .rect(cornerRadius: 28))
@@ -191,10 +251,18 @@ struct RunningDayCard: View {
 // MARK: - Tag beendet
 
 struct FinishedDayCard: View {
-    let day: WorkDay
+    @Bindable var day: WorkDay
     let totalBalance: Int
     let glassNamespace: Namespace.ID
     let onResume: () -> Void
+
+    /// Die Karte erscheint nur für beendete Tage, `endTime` ist also gesetzt.
+    private var endBinding: Binding<Date> {
+        Binding(
+            get: { day.endTime ?? day.plannedEnd },
+            set: { day.endTime = $0 }
+        )
+    }
 
     var body: some View {
         VStack(spacing: 24) {
@@ -207,11 +275,17 @@ struct FinishedDayCard: View {
                 .font(.title2.weight(.semibold))
 
             VStack(spacing: 12) {
-                SummaryRow(label: "Start", value: day.startTime.formatted(date: .omitted, time: .shortened))
-                if let endTime = day.endTime {
-                    SummaryRow(label: "Ende", value: endTime.formatted(date: .omitted, time: .shortened))
+                DatePicker("Start", selection: $day.startTime, displayedComponents: .hourAndMinute)
+                DatePicker("Ende", selection: endBinding, displayedComponents: .hourAndMinute)
+                Stepper(value: $day.breakMinutes, in: 0...120, step: 5) {
+                    HStack {
+                        Text("Pause")
+                        Spacer()
+                        Text("\(day.breakMinutes) Min")
+                            .foregroundStyle(.secondary)
+                            .monospacedDigit()
+                    }
                 }
-                SummaryRow(label: "Pause", value: "\(day.breakMinutes) Min")
                 if let worked = day.workedMinutes {
                     SummaryRow(label: "Gearbeitet", value: WorkDayCalculator.durationString(minutes: worked))
                 }

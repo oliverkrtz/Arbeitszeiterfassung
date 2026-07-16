@@ -38,7 +38,7 @@ struct TodayView: View {
                                     RunningDayCard(
                                         day: day,
                                         glassNamespace: glassNamespace,
-                                        onFinish: { finish(day) },
+                                        onFinish: { finish(day, at: $0) },
                                         onTimesChanged: { reschedule(day) }
                                     )
                                 }
@@ -71,9 +71,9 @@ struct TodayView: View {
         reschedule(day)
     }
 
-    private func finish(_ day: WorkDay) {
+    private func finish(_ day: WorkDay, at endTime: Date) {
         withAnimation(.smooth) {
-            day.endTime = .now
+            day.endTime = endTime
         }
         NotificationManager.shared.cancel(for: day)
     }
