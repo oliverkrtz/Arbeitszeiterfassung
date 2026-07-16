@@ -9,12 +9,29 @@ struct StartDayCard: View {
     /// Wird mit der zu stempelnden Startzeit aufgerufen.
     let onStart: (Date) -> Void
 
-    @State private var customStart: Date = .now
-    @State private var usesCustomStart = false
+    /// Manuell gewählte Startzeit, persistiert bis zum Einstempeln —
+    /// übersteht Tab-Wechsel und App-Neustarts. 0 = keine Auswahl.
+    @AppStorage("startCard.customStartTimestamp") private var customStartTimestamp: Double = 0
+
+    /// Die gespeicherte Auswahl zählt nur am selben Tag; ein Rest von
+    /// gestern wird ignoriert.
+    private var customStart: Date? {
+        guard customStartTimestamp > 0 else { return nil }
+        let date = Date(timeIntervalSince1970: customStartTimestamp)
+        guard Calendar.current.isDateInToday(date) else { return nil }
+        return date
+    }
+
+    private var customStartBinding: Binding<Date> {
+        Binding(
+            get: { customStart ?? .now },
+            set: { customStartTimestamp = $0.timeIntervalSince1970 }
+        )
+    }
 
     var body: some View {
         TimelineView(.everyMinute) { timeline in
-            let start = usesCustomStart ? customStart : timeline.date
+            let start = customStart ?? timeline.date
             let previewEnd = start.addingTimeInterval(
                 TimeInterval((settings.targetMinutes + settings.breakMinutes) * 60)
             )
@@ -39,12 +56,12 @@ struct StartDayCard: View {
                 .font(.callout)
 
                 Button {
-                    onStart(usesCustomStart ? customStart : .now)
+                    onStart(customStart ?? .now)
+                    customStartTimestamp = 0
                 } label: {
                     Label(
-                        usesCustomStart
-                            ? "Einstempeln um \(customStart.formatted(date: .omitted, time: .shortened))"
-                            : "Jetzt einstempeln",
+                        customStart.map { "Einstempeln um \($0.formatted(date: .omitted, time: .shortened))" }
+                            ?? "Jetzt einstempeln",
                         systemImage: "play.fill"
                     )
                     .font(.headline)
@@ -53,23 +70,24 @@ struct StartDayCard: View {
                 }
                 .buttonStyle(.glassProminent)
 
-                if usesCustomStart {
+                if customStart != nil {
                     HStack {
                         DatePicker(
                             "Startzeit",
-                            selection: $customStart,
+                            selection: customStartBinding,
                             displayedComponents: .hourAndMinute
                         )
                         Button("Zurücksetzen") {
-                            withAnimation(.smooth) { usesCustomStart = false }
+                            withAnimation(.smooth) { customStartTimestamp = 0 }
                         }
                         .font(.footnote)
                     }
                     .font(.callout)
                 } else {
                     Button("Andere Startzeit wählen") {
-                        customStart = .now
-                        withAnimation(.smooth) { usesCustomStart = true }
+                        withAnimation(.smooth) {
+                            customStartTimestamp = Date.now.timeIntervalSince1970
+                        }
                     }
                     .font(.footnote)
                     .foregroundStyle(.secondary)
