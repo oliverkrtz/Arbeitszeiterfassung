@@ -4,55 +4,81 @@ import SwiftData
 // MARK: - Noch kein Eintrag
 
 struct StartDayCard: View {
-    @Binding var plannedStart: Date
     let settings: AppSettings
     let glassNamespace: Namespace.ID
-    let onStart: () -> Void
+    /// Wird mit der zu stempelnden Startzeit aufgerufen.
+    let onStart: (Date) -> Void
 
-    private var previewEnd: Date {
-        plannedStart.addingTimeInterval(
-            TimeInterval((settings.targetMinutes + settings.breakMinutes) * 60)
-        )
-    }
+    @State private var customStart: Date = .now
+    @State private var usesCustomStart = false
 
     var body: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "sunrise")
-                .font(.system(size: 44, weight: .light))
-                .foregroundStyle(Color.accentColor)
-                .padding(.top, 8)
-
-            Text("Guten Morgen")
-                .font(.title2.weight(.semibold))
-
-            DatePicker(
-                "Startzeit",
-                selection: $plannedStart,
-                displayedComponents: .hourAndMinute
+        TimelineView(.everyMinute) { timeline in
+            let start = usesCustomStart ? customStart : timeline.date
+            let previewEnd = start.addingTimeInterval(
+                TimeInterval((settings.targetMinutes + settings.breakMinutes) * 60)
             )
-            .font(.body)
 
-            HStack {
-                Text("Feierabend wäre um")
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text(previewEnd.formatted(date: .omitted, time: .shortened))
-                    .fontWeight(.semibold)
-                    .monospacedDigit()
-            }
-            .font(.callout)
+            VStack(spacing: 24) {
+                Image(systemName: "sunrise")
+                    .font(.system(size: 44, weight: .light))
+                    .foregroundStyle(Color.accentColor)
+                    .padding(.top, 8)
 
-            Button(action: onStart) {
-                Label("Arbeitstag starten", systemImage: "play.fill")
+                Text("Guten Morgen")
+                    .font(.title2.weight(.semibold))
+
+                HStack {
+                    Text("Feierabend wäre um")
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text(previewEnd.formatted(date: .omitted, time: .shortened))
+                        .fontWeight(.semibold)
+                        .monospacedDigit()
+                }
+                .font(.callout)
+
+                Button {
+                    onStart(usesCustomStart ? customStart : .now)
+                } label: {
+                    Label(
+                        usesCustomStart
+                            ? "Einstempeln um \(customStart.formatted(date: .omitted, time: .shortened))"
+                            : "Jetzt einstempeln",
+                        systemImage: "play.fill"
+                    )
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 6)
+                }
+                .buttonStyle(.glassProminent)
+
+                if usesCustomStart {
+                    HStack {
+                        DatePicker(
+                            "Startzeit",
+                            selection: $customStart,
+                            displayedComponents: .hourAndMinute
+                        )
+                        Button("Zurücksetzen") {
+                            withAnimation(.smooth) { usesCustomStart = false }
+                        }
+                        .font(.footnote)
+                    }
+                    .font(.callout)
+                } else {
+                    Button("Andere Startzeit wählen") {
+                        customStart = .now
+                        withAnimation(.smooth) { usesCustomStart = true }
+                    }
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                }
             }
-            .buttonStyle(.glassProminent)
+            .padding(24)
+            .glassEffect(.regular, in: .rect(cornerRadius: 28))
+            .glassEffectID("todayCard", in: glassNamespace)
         }
-        .padding(24)
-        .glassEffect(.regular, in: .rect(cornerRadius: 28))
-        .glassEffectID("todayCard", in: glassNamespace)
     }
 }
 
@@ -111,7 +137,7 @@ struct RunningDayCard: View {
             .onChange(of: day.breakMinutes) { onTimesChanged() }
 
             Button(action: onFinish) {
-                Label("Feierabend machen", systemImage: "stop.fill")
+                Label("Jetzt ausstempeln", systemImage: "stop.fill")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 6)

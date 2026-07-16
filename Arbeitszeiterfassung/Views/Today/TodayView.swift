@@ -6,7 +6,6 @@ struct TodayView: View {
     @Environment(AppSettings.self) private var settings
     @Query(sort: \WorkDay.date, order: .reverse) private var days: [WorkDay]
 
-    @State private var plannedStart: Date = .now
     @Namespace private var glassNamespace
 
     private var today: WorkDay? {
@@ -45,10 +44,9 @@ struct TodayView: View {
                                 }
                             } else {
                                 StartDayCard(
-                                    plannedStart: $plannedStart,
                                     settings: settings,
                                     glassNamespace: glassNamespace,
-                                    onStart: start
+                                    onStart: { start(at: $0) }
                                 )
                             }
                         }
@@ -57,14 +55,13 @@ struct TodayView: View {
                 }
             }
             .navigationTitle("Heute")
-            .onAppear { plannedStart = .now }
         }
     }
 
-    private func start() {
+    private func start(at startTime: Date) {
         let day = WorkDay(
             date: .now,
-            startTime: plannedStart,
+            startTime: startTime,
             breakMinutes: settings.breakMinutes,
             targetMinutes: settings.targetMinutes
         )

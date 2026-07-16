@@ -6,8 +6,9 @@ per Benachrichtigung und führt dein Gleitzeitkonto.
 
 ## Funktionen
 
-- **Heute:** Startzeit eintragen (oder „Jetzt starten“), errechnete Feierabendzeit
-  groß im Blick, Fortschrittsring, ein Tap für den Feierabend-Stempel.
+- **Heute:** Ein Tap auf „Jetzt einstempeln“ startet den Tag mit der aktuellen
+  Uhrzeit (manuelle Startzeit optional), errechnete Feierabendzeit groß im Blick,
+  Fortschrittsring, ein Tap auf „Jetzt ausstempeln“ für den Feierabend.
 - **Feierabend-Benachrichtigung:** Lokale Push zur errechneten Feierabendzeit,
   optional mit Vorwarnung (z. B. 10 Min vorher). Komplett offline, kein Server nötig.
 - **Gleitzeitkonto:** Tagessaldo (Ist − Soll) und laufender Gesamtsaldo,
