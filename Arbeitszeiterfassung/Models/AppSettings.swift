@@ -27,6 +27,7 @@ final class AppSettings {
     private static let notificationsKey = "settings.notificationsEnabled"
     private static let preAlertKey = "settings.preAlertMinutes"
     private static let appearanceKey = "settings.appearance"
+    private static let liveActivityKey = "settings.liveActivityEnabled"
 
     /// Sollarbeitszeit pro Tag in Minuten (Default: 8 Stunden).
     var targetMinutes: Int {
@@ -58,6 +59,11 @@ final class AppSettings {
         didSet { UserDefaults.standard.set(appearance.rawValue, forKey: Self.appearanceKey) }
     }
 
+    /// Feierabend-Countdown auf Sperrbildschirm/Dynamic Island (Live Activity)?
+    var liveActivityEnabled: Bool {
+        didSet { UserDefaults.standard.set(liveActivityEnabled, forKey: Self.liveActivityKey) }
+    }
+
     init() {
         let defaults = UserDefaults.standard
         defaults.register(defaults: [
@@ -67,6 +73,7 @@ final class AppSettings {
             Self.notificationsKey: true,
             Self.preAlertKey: 0,
             Self.appearanceKey: Appearance.system.rawValue,
+            Self.liveActivityKey: true,
         ])
         targetMinutes = defaults.integer(forKey: Self.targetKey)
         breakMinutes = defaults.integer(forKey: Self.breakKey)
@@ -74,5 +81,6 @@ final class AppSettings {
         notificationsEnabled = defaults.bool(forKey: Self.notificationsKey)
         preAlertMinutes = defaults.integer(forKey: Self.preAlertKey)
         appearance = Appearance(rawValue: defaults.integer(forKey: Self.appearanceKey)) ?? .system
+        liveActivityEnabled = defaults.bool(forKey: Self.liveActivityKey)
     }
 }

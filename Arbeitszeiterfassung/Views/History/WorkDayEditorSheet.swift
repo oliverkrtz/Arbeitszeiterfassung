@@ -68,6 +68,10 @@ struct WorkDayEditorSheet: View {
 
     private func rescheduleIfNeeded() {
         guard Calendar.current.isDateInToday(day.date) else { return }
+
+        let liveActivityEnabled = settings.liveActivityEnabled
+        Task { await LiveActivityManager.shared.sync(day: day, enabled: liveActivityEnabled) }
+
         if day.isFinished || !settings.notificationsEnabled {
             NotificationManager.shared.cancel(for: day)
         } else {

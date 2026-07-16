@@ -76,6 +76,7 @@ struct TodayView: View {
             day.endTime = endTime
         }
         NotificationManager.shared.cancel(for: day)
+        Task { await LiveActivityManager.shared.endAll() }
     }
 
     private func resume(_ day: WorkDay) {
@@ -86,6 +87,9 @@ struct TodayView: View {
     }
 
     private func reschedule(_ day: WorkDay) {
+        let liveActivityEnabled = settings.liveActivityEnabled
+        Task { await LiveActivityManager.shared.sync(day: day, enabled: liveActivityEnabled) }
+
         guard settings.notificationsEnabled else {
             NotificationManager.shared.cancel(for: day)
             return

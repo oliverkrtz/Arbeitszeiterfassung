@@ -43,6 +43,10 @@ ohne Konto, ohne Datenweitergabe.
 - Lokale Push zur errechneten Feierabendzeit, optional mit Vorwarnung (5–30 Min vorher)
 - Wird beim Einstempeln geplant und bei jeder Zeitänderung automatisch umgeplant — komplett offline, kein Server nötig
 
+**Countdown auf dem Sperrbildschirm**
+- Nach dem Einstempeln läuft eine Live Activity: Restzeit bis Feierabend mit Fortschrittsbalken auf dem Sperrbildschirm und in der Dynamic Island
+- Zählt systemseitig weiter, ohne dass die App offen sein muss; in den Einstellungen abschaltbar
+
 **Verlauf**
 - Alle Tage mit Start, Ende, Pause und Tagessaldo
 - Bearbeiten, Löschen und Nachtragen vergessener Tage
@@ -74,9 +78,11 @@ lassen sich beide Werte trotzdem individuell anpassen.
 (ein kostenloses Konto reicht für das eigene Gerät)
 
 1. Repository klonen und `Arbeitszeiterfassung.xcodeproj` in Xcode öffnen
-2. Projekt → Target **Arbeitszeiterfassung** → **Signing & Capabilities** → bei
-   **Team** dein Apple-Konto wählen (lehnt Xcode die Bundle-ID ab, einfach eine
-   eigene eintragen, z. B. `de.deinname.Arbeitszeiterfassung`)
+2. Projekt → **Signing & Capabilities** → bei **beiden Targets**
+   (**Arbeitszeiterfassung** und **ArbeitszeitWidgets**) dein Apple-Konto als
+   **Team** wählen (lehnt Xcode die Bundle-ID ab, einfach eine eigene eintragen,
+   z. B. `de.deinname.Arbeitszeiterfassung` — die Widget-ID muss mit derselben
+   ID beginnen)
 3. iPhone anschließen, oben als Ziel auswählen, **⌘R**
 4. Beim ersten Start ggf. unter *Einstellungen → Allgemein → VPN & Geräteverwaltung*
    dem Entwicklerzertifikat vertrauen
@@ -96,24 +102,33 @@ lassen sich beide Werte trotzdem individuell anpassen.
 | **SwiftData** | Persistenz der Arbeitstage, lokal auf dem Gerät |
 | **Swift Charts** | Saldo- und Zeiten-Diagramme in der Auswertung |
 | **UserNotifications** | Lokale Feierabend-Push inkl. Vorwarnung |
+| **ActivityKit + WidgetKit** | Live-Activity-Countdown auf Sperrbildschirm und Dynamic Island |
 
 ## Projektstruktur
 
 ```
-Arbeitszeiterfassung/
+Arbeitszeiterfassung/               App-Target
 ├── ArbeitszeiterfassungApp.swift   App-Entry, SwiftData-Container, Notification-Delegate
 ├── Models/
 │   ├── WorkDay.swift               Arbeitstag (@Model, SwiftData)
 │   └── AppSettings.swift           Einstellungen (UserDefaults, @Observable)
 ├── Logic/
 │   ├── WorkDayCalculator.swift     Reine Rechen- und Formatierlogik
-│   └── NotificationManager.swift   Lokale Feierabend-Benachrichtigung
+│   ├── NotificationManager.swift   Lokale Feierabend-Benachrichtigung
+│   └── LiveActivityManager.swift   Steuert den Sperrbildschirm-Countdown
 └── Views/
     ├── RootTabView.swift           Tabs: Heute · Verlauf · Auswertung · Einstellungen
     ├── Today/                      Stempeluhr mit drei Tageszuständen
     ├── History/                    Liste, Editor, Nachtragen
     ├── Stats/                      Kennzahlen + Swift-Charts-Diagramme
     └── Settings/                   Einstellungs-Formular
+
+ArbeitszeitWidgets/                 Widget-Extension-Target
+├── ArbeitszeitWidgetsBundle.swift  Widget-Bundle-Entry
+└── WorkDayLiveActivity.swift       Live Activity: Sperrbildschirm + Dynamic Island
+
+Shared/                             In beiden Targets enthalten
+└── WorkDayActivityAttributes.swift Gemeinsame Live-Activity-Definition
 ```
 
 ## Design-Entscheidungen

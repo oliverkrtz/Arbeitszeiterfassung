@@ -58,6 +58,14 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    Toggle("Countdown bis Feierabend", isOn: $settings.liveActivityEnabled)
+                } header: {
+                    Text("Sperrbildschirm")
+                } footer: {
+                    Text("Zeigt nach dem Einstempeln einen laufenden Countdown auf dem Sperrbildschirm und in der Dynamic Island.")
+                }
+
+                Section {
                     Picker("Richtung", selection: balanceSignBinding) {
                         Text("Überstunden (+)").tag(1)
                         Text("Unterstunden (−)").tag(-1)
@@ -90,6 +98,9 @@ struct SettingsView: View {
             }
             .onChange(of: settings.notificationsEnabled) { _, enabled in
                 handleNotificationToggle(enabled)
+            }
+            .onChange(of: settings.liveActivityEnabled) { _, enabled in
+                handleLiveActivityToggle(enabled)
             }
             .task {
                 await refreshAuthorizationStatus()
@@ -163,6 +174,19 @@ struct SettingsView: View {
             }
         } else {
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        }
+    }
+
+    private func handleLiveActivityToggle(_ enabled: Bool) {
+        let today = days.first {
+            Calendar.current.isDateInToday($0.date) && !$0.isFinished
+        }
+        Task {
+            if enabled, let today {
+                await LiveActivityManager.shared.sync(day: today, enabled: true)
+            } else {
+                await LiveActivityManager.shared.endAll()
+            }
         }
     }
 

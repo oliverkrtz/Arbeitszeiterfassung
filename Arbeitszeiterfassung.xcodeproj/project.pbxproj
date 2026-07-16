@@ -6,8 +6,37 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AB100000000000000000001C /* ArbeitszeitWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AB1000000000000000000013 /* ArbeitszeitWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AB100000000000000000001D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AB1000000000000000000009 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AB1000000000000000000014;
+			remoteInfo = ArbeitszeitWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AB100000000000000000001B /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				AB100000000000000000001C /* ArbeitszeitWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		AB1000000000000000000004 /* Arbeitszeiterfassung.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arbeitszeiterfassung.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB1000000000000000000013 /* ArbeitszeitWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArbeitszeitWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +45,27 @@
 			path = Arbeitszeiterfassung;
 			sourceTree = "<group>";
 		};
+		AB1000000000000000000011 /* ArbeitszeitWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ArbeitszeitWidgets;
+			sourceTree = "<group>";
+		};
+		AB1000000000000000000012 /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		AB1000000000000000000007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB1000000000000000000016 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +79,8 @@
 			isa = PBXGroup;
 			children = (
 				AB1000000000000000000001 /* Arbeitszeiterfassung */,
+				AB1000000000000000000011 /* ArbeitszeitWidgets */,
+				AB1000000000000000000012 /* Shared */,
 				AB1000000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				AB1000000000000000000004 /* Arbeitszeiterfassung.app */,
+				AB1000000000000000000013 /* ArbeitszeitWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -55,13 +104,16 @@
 				AB1000000000000000000006 /* Sources */,
 				AB1000000000000000000007 /* Frameworks */,
 				AB1000000000000000000008 /* Resources */,
+				AB100000000000000000001B /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				AB100000000000000000001E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				AB1000000000000000000001 /* Arbeitszeiterfassung */,
+				AB1000000000000000000012 /* Shared */,
 			);
 			name = Arbeitszeiterfassung;
 			packageProductDependencies = (
@@ -69,6 +121,29 @@
 			productName = Arbeitszeiterfassung;
 			productReference = AB1000000000000000000004 /* Arbeitszeiterfassung.app */;
 			productType = "com.apple.product-type.application";
+		};
+		AB1000000000000000000014 /* ArbeitszeitWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB1000000000000000000018 /* Build configuration list for PBXNativeTarget "ArbeitszeitWidgets" */;
+			buildPhases = (
+				AB1000000000000000000015 /* Sources */,
+				AB1000000000000000000016 /* Frameworks */,
+				AB1000000000000000000017 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				AB1000000000000000000011 /* ArbeitszeitWidgets */,
+				AB1000000000000000000012 /* Shared */,
+			);
+			name = ArbeitszeitWidgets;
+			packageProductDependencies = (
+			);
+			productName = ArbeitszeitWidgets;
+			productReference = AB1000000000000000000013 /* ArbeitszeitWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -81,6 +156,9 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					AB1000000000000000000005 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					AB1000000000000000000014 = {
 						CreatedOnToolsVersion = 26.0;
 					};
 				};
@@ -101,12 +179,20 @@
 			projectRoot = "";
 			targets = (
 				AB1000000000000000000005 /* Arbeitszeiterfassung */,
+				AB1000000000000000000014 /* ArbeitszeitWidgets */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AB1000000000000000000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB1000000000000000000017 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -123,7 +209,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AB1000000000000000000015 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AB100000000000000000001E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AB1000000000000000000014 /* ArbeitszeitWidgets */;
+			targetProxy = AB100000000000000000001D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		AB100000000000000000000D /* Debug */ = {
@@ -255,6 +356,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Arbeitszeit;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -283,6 +385,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Arbeitszeit;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -294,6 +397,56 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.oliverkrtz.Arbeitszeiterfassung;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		AB1000000000000000000019 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArbeitszeitWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ArbeitszeitWidgets;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.oliverkrtz.Arbeitszeiterfassung.Widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		AB100000000000000000001A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArbeitszeitWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ArbeitszeitWidgets;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.oliverkrtz.Arbeitszeiterfassung.Widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -317,6 +470,15 @@
 			buildConfigurations = (
 				AB100000000000000000000F /* Debug */,
 				AB1000000000000000000010 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AB1000000000000000000018 /* Build configuration list for PBXNativeTarget "ArbeitszeitWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB1000000000000000000019 /* Debug */,
+				AB100000000000000000001A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
