@@ -39,6 +39,16 @@
 		AB1000000000000000000013 /* ArbeitszeitWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArbeitszeitWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AB100000000000000000001F /* Exceptions for "ArbeitszeitWidgets" folder in "ArbeitszeitWidgets" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = AB1000000000000000000014 /* ArbeitszeitWidgets */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AB1000000000000000000001 /* Arbeitszeiterfassung */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -47,6 +57,9 @@
 		};
 		AB1000000000000000000011 /* ArbeitszeitWidgets */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AB100000000000000000001F /* Exceptions for "ArbeitszeitWidgets" folder in "ArbeitszeitWidgets" target */,
+			);
 			path = ArbeitszeitWidgets;
 			sourceTree = "<group>";
 		};
