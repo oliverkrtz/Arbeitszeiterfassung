@@ -1,16 +1,18 @@
 <div align="center">
 
-# ⏱ Arbeitszeiterfassung
+<img src="docs/AppIcon.svg" width="96" alt="App-Icon" />
+
+# Arbeitszeiterfassung
 
 **Gleitzeit-Tracker im Liquid-Glass-Design für iOS 26**
 
 Einstempeln mit einem Tap · Feierabendzeit automatisch errechnet · lokale Erinnerung · Gleitzeitkonto
 
-![iOS](https://img.shields.io/badge/iOS-26%2B-blue?style=flat&logo=apple&logoColor=white)
+![iOS](https://img.shields.io/badge/iOS-26%2B-1d1d1f?style=flat&logo=apple&logoColor=white)
 ![Swift](https://img.shields.io/badge/Swift-5-F05138?style=flat&logo=swift&logoColor=white)
 ![SwiftUI](https://img.shields.io/badge/UI-SwiftUI-0A84FF?style=flat)
 ![SwiftData](https://img.shields.io/badge/Persistenz-SwiftData-30B0C7?style=flat)
-![Plattform](https://img.shields.io/badge/Ger%C3%A4t-iPhone-lightgrey?style=flat)
+![Plattform](https://img.shields.io/badge/Ger%C3%A4t-iPhone-8e8e93?style=flat)
 
 </div>
 
@@ -29,36 +31,36 @@ ohne Konto, ohne Datenweitergabe.
 </p>
 -->
 
-## ✨ Features
+## Features
 
-**☀️ Heute — die Stempeluhr**
+**Heute — die Stempeluhr**
 - Ein Tap zum Ein- und Ausstempeln, exakt zur Uhrzeit des Antippens
 - Errechnete Feierabendzeit groß im Blick, mit Fortschrittsring
 - Manuelle Startzeit optional (z. B. nachträglich für 7:00 stempeln) — die Auswahl bleibt bis zum Einstempeln erhalten
 - Startzeit und Pause auch während des Tages korrigierbar, „Weiter arbeiten" nach versehentlichem Ausstempeln
 
-**🔔 Feierabend-Benachrichtigung**
+**Feierabend-Benachrichtigung**
 - Lokale Push zur errechneten Feierabendzeit, optional mit Vorwarnung (5–30 Min vorher)
 - Wird beim Einstempeln geplant und bei jeder Zeitänderung automatisch umgeplant — komplett offline, kein Server nötig
 
-**📅 Verlauf**
+**Verlauf**
 - Alle Tage mit Start, Ende, Pause und Tagessaldo
 - Bearbeiten, Löschen und Nachtragen vergessener Tage
 
-**📊 Auswertung**
+**Auswertung**
 - Ø Startzeit, Ø Feierabend, Ø Arbeitszeit und Kontostand als Kennzahlen
 - Tagessaldo-Diagramm um die Nulllinie und Start-/Feierabendzeiten im Zeitverlauf (Swift Charts)
 - Zeitraumfilter: 7 Tage · 30 Tage · Gesamt
 
-**⚙️ Einstellungen**
+**Einstellungen**
 - Sollarbeitszeit und Pausendauer frei einstellbar
 - Startsaldo fürs Gleitzeitkonto (falls dein echtes Konto nicht bei ±0 beginnt)
 
-## 🧮 So rechnet die App
+## So rechnet die App
 
 ```
-Feierabend    = Startzeit + Sollarbeitszeit + Pause
-Tagessaldo    = (Ende − Start − Pause) − Sollarbeitszeit
+Feierabend     = Startzeit + Sollarbeitszeit + Pause
+Tagessaldo     = (Ende − Start − Pause) − Sollarbeitszeit
 Gleitzeitkonto = Startsaldo + Summe aller Tagessalden
 ```
 
@@ -66,7 +68,7 @@ Sollzeit und Pause werden **beim Einstempeln in den Tag kopiert** — änderst d
 die Einstellungen, bleiben historische Tage und dein Saldo unverfälscht. Pro Tag
 lassen sich beide Werte trotzdem individuell anpassen.
 
-## 🚀 Installation
+## Installation
 
 **Voraussetzungen:** macOS mit Xcode 26 · iPhone mit iOS 26 · Apple-Konto in Xcode
 (ein kostenloses Konto reicht für das eigene Gerät)
@@ -85,7 +87,7 @@ lassen sich beide Werte trotzdem individuell anpassen.
 > die App einfach erneut über Xcode installieren. Mit bezahltem Developer-Account
 > entfällt das.
 
-## 🛠 Tech-Stack
+## Tech-Stack
 
 | Technologie | Einsatz |
 |---|---|
@@ -95,7 +97,7 @@ lassen sich beide Werte trotzdem individuell anpassen.
 | **Swift Charts** | Saldo- und Zeiten-Diagramme in der Auswertung |
 | **UserNotifications** | Lokale Feierabend-Push inkl. Vorwarnung |
 
-## 📁 Projektstruktur
+## Projektstruktur
 
 ```
 Arbeitszeiterfassung/
@@ -114,7 +116,7 @@ Arbeitszeiterfassung/
     └── Settings/                   Einstellungs-Formular
 ```
 
-## 💡 Design-Entscheidungen
+## Design-Entscheidungen
 
 **Lokale Push statt Telegram.** Eine Telegram-Nachricht bräuchte einen Server, der
 zur richtigen Zeit sendet. Die lokale Benachrichtigung wird direkt beim Einstempeln
