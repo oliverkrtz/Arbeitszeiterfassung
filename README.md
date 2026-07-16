@@ -13,6 +13,8 @@ Einstempeln mit einem Tap · Feierabendzeit automatisch errechnet · lokale Erin
 ![SwiftUI](https://img.shields.io/badge/UI-SwiftUI-0A84FF?style=flat)
 ![SwiftData](https://img.shields.io/badge/Persistenz-SwiftData-30B0C7?style=flat)
 ![Plattform](https://img.shields.io/badge/Ger%C3%A4t-iPhone-8e8e93?style=flat)
+![Build](https://github.com/oliverkrtz/Arbeitszeiterfassung/actions/workflows/build.yml/badge.svg?branch=main)
+![Lizenz](https://img.shields.io/badge/Lizenz-MIT-8e8e93?style=flat)
 
 </div>
 
@@ -148,5 +150,5 @@ Primär-Buttons. Ruhige Farbwelt, ein Akzentton, keine überladenen Effekte.
 ---
 
 <div align="center">
-<sub>Privates Projekt · alle Daten bleiben lokal auf dem iPhone · keine Analytics, keine Server</sub>
+<sub>Alle Daten bleiben lokal auf dem iPhone · keine Analytics, keine Server · <a href="LICENSE">MIT-Lizenz</a></sub>
 </div>
